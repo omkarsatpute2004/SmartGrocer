@@ -1,0 +1,52 @@
+@model List<SmartGrocer.Models.Product>
+@{
+    ViewData["Title"] = "Inventory Stock View";
+}
+
+<div class="card p-4">
+    <h5 class="mb-4">Current Stock Levels</h5>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>PRODUCT</th>
+                    <th>CATEGORY</th>
+                    <th>PRICE (SELLING)</th>
+                    <th>AVAILABLE QTY</th>
+                    <th>STATUS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-4">No inventory data available for this shop.</td>
+                    </tr>
+                }
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@p.Name</td>
+                        <td><span class="badge bg-secondary">@p.Category?.Name</span></td>
+                        <td class="text-info">₹@p.SellingPrice</td>
+                        <td>@p.Quantity</td>
+                        <td>
+                            @if (p.Quantity < 10)
+                            {
+                                <span class="badge bg-danger">Low Stock</span>
+                            }
+                            else if (p.Quantity == 0)
+                            {
+                                <span class="badge bg-dark">Out of Stock</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">In Stock</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

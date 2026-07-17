@@ -1,0 +1,64 @@
+@model SmartGrocer.Models.Shop
+@{
+    ViewData["Title"] = "Shop Profile Management";
+}
+
+<div class="card p-4 mx-auto shadow-sm" style="max-width: 600px;">
+    @if (Model == null || Model.ShopId == 0)
+    {
+        <h5 class="mb-1 fw-bold">Register New Grocery Shop</h5>
+        <p class="text-secondary small mb-4">Provide details for your new shop registration. Admin approval is required before you can manage it.</p>
+    }
+    else
+    {
+        <h5 class="mb-1 fw-bold">Edit Shop Profile</h5>
+        <p class="text-secondary small mb-4">Update the details for "@Model.ShopName".</p>
+    }
+
+    <form asp-action="ShopProfile" method="post">
+        @if (Model != null && Model.ShopId != 0)
+        {
+            <input type="hidden" name="ShopId" value="@Model.ShopId" />
+        }
+        
+        <div class="mb-3">
+            <label class="form-label fw-bold small">Shop Name</label>
+            <input type="text" name="ShopName" value="@Model?.ShopName" class="form-control" placeholder="Enter shop name" required />
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold small">Location</label>
+            <input type="text" name="Location" value="@Model?.Location" class="form-control" placeholder="Enter shop location" required />
+        </div>
+        
+        @if (Model != null && Model.ShopId != 0)
+        {
+            <div class="alert alert-info py-2" style="background: rgba(0,210,255,0.1); border-color: rgba(0,210,255,0.2);">
+                <i class="fas fa-id-card me-2"></i> Shop ID: <strong>@Model.ShopId</strong> 
+                <div class="small text-secondary mt-1">(Employees need this ID to register for your shop)</div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold small">Current Status</label>
+                <div>
+                    @if (Model.Status == SmartGrocer.Models.UserStatus.Approved)
+                    {
+                        <span class="badge bg-success">Approved & Active</span>
+                    }
+                    else if (Model.Status == SmartGrocer.Models.UserStatus.Pending)
+                    {
+                        <span class="badge bg-warning text-dark">Pending Admin Approval</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">@Model.Status</span>
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="d-flex gap-2">
+            <a href="/Owner/MyShops" class="btn btn-outline-secondary w-50">Back</a>
+            <button type="submit" class="btn btn-gradient w-50">@(Model == null || Model.ShopId == 0 ? "Submit Registration" : "Save Changes")</button>
+        </div>
+    </form>
+</div>

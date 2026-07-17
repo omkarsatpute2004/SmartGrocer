@@ -1,0 +1,63 @@
+@model List<SmartGrocer.Models.Shop>
+@{
+    ViewData["Title"] = "System Shops";
+}
+
+<div class="card p-4">
+    <h5 class="mb-4">Registered Shops</h5>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>SHOP ID</th>
+                    <th>SHOP NAME</th>
+                    <th>LOCATION</th>
+                    <th>OWNER</th>
+                    <th>OWNER EMAIL</th>
+                    <th>STATUS</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center py-4">No shops registered yet.</td>
+                    </tr>
+                }
+                @foreach (var shop in Model)
+                {
+                    <tr>
+                        <td><span class="badge bg-dark">#@shop.ShopId</span></td>
+                        <td class="fw-bold">@shop.ShopName</td>
+                        <td>@shop.Location</td>
+                        <td>@shop.Owner.Name</td>
+                        <td class="small text-secondary">@shop.Owner.Email</td>
+                        <td>
+                            @if (shop.Status == SmartGrocer.Models.UserStatus.Approved)
+                            {
+                                <span class="badge bg-success">Approved</span>
+                            }
+                            else if (shop.Status == SmartGrocer.Models.UserStatus.Pending)
+                            {
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">@shop.Status</span>
+                            }
+                        </td>
+                        <td>
+                            <form asp-action="RemoveShop" method="post" onsubmit="return confirm('Are you sure you want to remove this shop?');">
+                                <input type="hidden" name="id" value="@shop.ShopId" />
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-trash-alt"></i> Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

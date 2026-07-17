@@ -1,0 +1,222 @@
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var role = HttpContextAccessor.HttpContext.Session.GetString("Role");
+    var userName = HttpContextAccessor.HttpContext.Session.GetString("UserName");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SmartGrocer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --bg-dark: #121212;
+            --sidebar-bg: #1e1e1e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        .wrapper {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+        }
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            background: var(--sidebar-bg);
+            color: #fff;
+            transition: all 0.3s;
+            height: 100vh;
+            position: fixed;
+            z-index: 1000;
+            border-right: 1px solid rgba(255,255,255,0.05);
+        }
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        #sidebar ul.components {
+            padding: 20px 0;
+        }
+        #sidebar ul li a {
+            padding: 15px 25px;
+            font-size: 1.1em;
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        #sidebar ul li a:hover {
+            color: var(--primary);
+            background: rgba(255,255,255,0.05);
+        }
+        #sidebar ul li.active > a {
+            color: #fff;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 0 25px 25px 0;
+            margin-right: 10px;
+        }
+        #content {
+            width: calc(100% - 250px);
+            padding: 40px;
+            min-height: 100vh;
+            transition: all 0.3s;
+            margin-left: 250px;
+        }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            color: white;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .text-gradient {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .navbar {
+            background: transparent !important;
+            padding: 20px 0;
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        table {
+            color: #e0e0e0 !important;
+        }
+        .table thead th {
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            color: var(--primary);
+        }
+        .table td {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3 class="text-gradient fw-bold"><i class="fas fa-shopping-basket"></i> SG-Pro</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                @if (role == "Admin")
+                {
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")">
+                        <a href="/Admin/Dashboard"><i class="fas fa-chart-line me-2"></i> Dashboard</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "ManageOwners" ? "active" : "")">
+                        <a href="/Admin/ManageOwners"><i class="fas fa-users-cog me-2"></i> Manage Owners</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "ApproveShops" ? "active" : "")">
+                        <a href="/Admin/ApproveShops"><i class="fas fa-clipboard-check me-2"></i> Shop Requests</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Shops" ? "active" : "")">
+                        <a href="/Admin/Shops"><i class="fas fa-store me-2"></i> All Shops</a>
+                    </li>
+                }
+                else if (role == "Owner")
+                {
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")">
+                        <a href="/Owner/Dashboard"><i class="fas fa-chart-line me-2"></i> Dashboard</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "MyShops" ? "active" : "")">
+                        <a href="/Owner/MyShops"><i class="fas fa-store me-2"></i> My Shops</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Employees" ? "active" : "")">
+                        <a href="/Owner/Employees"><i class="fas fa-users me-2"></i> Employees</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Categories" ? "active" : "")">
+                        <a href="/Owner/Categories"><i class="fas fa-tags me-2"></i> Categories</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Products" ? "active" : "")">
+                        <a href="/Owner/Products"><i class="fas fa-box me-2"></i> Products</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Sales" ? "active" : "")">
+                        <a href="/Owner/Sales"><i class="fas fa-shopping-cart me-2"></i> Record Sale</a>
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "SalesHistory" ? "active" : "")">
+                        <a href="/Owner/SalesHistory"><i class="fas fa-history me-2"></i> Sales History</a>
+                    </li>
+                }
+                else if (role == "Employee")
+                {
+                    <li class="@(ViewContext.RouteData.Values["Action"]?.ToString() == "Dashboard" ? "active" : "")">
+                        <a href="/Employee/Dashboard"><i class="fas fa-chart-line me-2"></i> Dashboard</a>
+                    </li>
+                    <li><a href="/Employee/Stock"><i class="fas fa-boxes me-2"></i> View Stock</a></li>
+                }
+                <li><a href="/Account/Logout"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <h4 class="mb-0">@ViewData["Title"]</h4>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="me-3">Welcome, <strong>@userName</strong></span>
+                        <div class="badge bg-primary">@role</div>
+                    </div>
+                </div>
+            </nav>
+
+            <main role="main" class="pb-3">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show border-0" role="alert" style="background: rgba(25, 135, 84, 0.2); color: #75b798;">
+                        <i class="fas fa-check-circle me-2"></i> @TempData["Success"]
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show border-0" role="alert" style="background: rgba(220, 53, 69, 0.2); color: #ea868f;">
+                        <i class="fas fa-exclamation-triangle me-2"></i> @TempData["Error"]
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["Info"] != null)
+                {
+                    <div class="alert alert-info alert-dismissible fade show border-0" role="alert" style="background: rgba(13, 202, 240, 0.2); color: #6edff6;">
+                        <i class="fas fa-info-circle me-2"></i> @TempData["Info"]
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

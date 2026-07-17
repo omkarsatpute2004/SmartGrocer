@@ -1,0 +1,49 @@
+@model List<SmartGrocer.Models.User>
+@{
+    ViewData["Title"] = "Owner Approval Requests";
+}
+
+<div class="card p-4">
+    <h5 class="mb-4">Pending Registrations</h5>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>ROLE</th>
+                    <th>STATUS</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-4">No pending requests at the moment.</td>
+                    </tr>
+                }
+                @foreach (var owner in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@owner.Name</td>
+                        <td>@owner.Email</td>
+                        <td><span class="badge bg-secondary">@owner.Role</span></td>
+                        <td><span class="badge bg-warning">@owner.Status</span></td>
+                        <td>
+                            <form asp-action="ProcessOwner" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@owner.Id" />
+                                <button type="submit" name="action" value="Approve" class="btn btn-sm btn-success me-1">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button type="submit" name="action" value="Reject" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

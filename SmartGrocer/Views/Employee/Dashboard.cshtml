@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Employee Dashboard";
+}
+
+<div class="card p-4 mb-4">
+    <h2 class="text-gradient fw-bold">Welcome back to @ViewBag.ShopName</h2>
+    <p class="text-secondary">You are logged in as a store employee. Your access is restricted to inventory viewing and shop-level analytics.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card p-4">
+            <h6 class="text-secondary">TOTAL PRODUCTS</h6>
+            <h2 class="text-gradient fw-bold">@ViewBag.TotalProducts</h2>
+            <div class="small">Full Catalog Items</div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card p-4">
+            <h6 class="text-secondary">LOW STOCK ITEMS</h6>
+            <h2 class="text-danger fw-bold">@ViewBag.LowStockCount</h2>
+            <div class="small">Items requiring restock</div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card p-4">
+            <h6 class="text-secondary">TOTAL TRANSACTIONS</h6>
+            <h2 class="text-primary fw-bold">@ViewBag.TotalSalesCount</h2>
+            <div class="small">Overall shop activity</div>
+        </div>
+    </div>
+</div>
+
+<div class="card p-4 mt-2">
+    <h5>Quick Actions</h5>
+    <div class="d-flex gap-2 mt-3">
+        <a href="/Employee/Stock" class="btn btn-gradient">View Full Inventory</a>
+    </div>
+</div>

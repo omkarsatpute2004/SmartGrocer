@@ -1,0 +1,78 @@
+@model List<SmartGrocer.Models.User>
+@{
+    ViewData["Title"] = "Manage Owners";
+}
+
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="mb-0">Shop Owners Management</h5>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>STATUS</th>
+                    <th>ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var owner in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@owner.Name</td>
+                        <td>@owner.Email</td>
+                        <td>
+                            @if (owner.Status == SmartGrocer.Models.UserStatus.Approved)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else if (owner.Status == SmartGrocer.Models.UserStatus.Pending)
+                            {
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            }
+                            else if (owner.Status == SmartGrocer.Models.UserStatus.Blocked)
+                            {
+                                <span class="badge bg-danger">Blocked</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">@owner.Status</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                @if (owner.Status == SmartGrocer.Models.UserStatus.Pending)
+                                {
+                                    <form asp-action="ProcessOwner" method="post">
+                                        <input type="hidden" name="id" value="@owner.Id" />
+                                        <input type="hidden" name="action" value="Approve" />
+                                        <button type="submit" class="btn btn-sm btn-success px-3">Approve</button>
+                                    </form>
+                                }
+                                else if (owner.Status == SmartGrocer.Models.UserStatus.Approved)
+                                {
+                                    <form asp-action="ProcessOwner" method="post" onsubmit="return confirm('Block this owner? All their shops will remain but they cannot log in.');">
+                                        <input type="hidden" name="id" value="@owner.Id" />
+                                        <input type="hidden" name="action" value="Block" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger px-3">Block Owner</button>
+                                    </form>
+                                }
+                                else if (owner.Status == SmartGrocer.Models.UserStatus.Blocked)
+                                {
+                                    <form asp-action="ProcessOwner" method="post">
+                                        <input type="hidden" name="id" value="@owner.Id" />
+                                        <input type="hidden" name="action" value="Unblock" />
+                                        <button type="submit" class="btn btn-sm btn-outline-success px-3">Unblock Owner</button>
+                                    </form>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

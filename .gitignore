@@ -1,0 +1,27 @@
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+## Databases
+*.db
+*.sqlite
+*.accdb
+*.laccdb
+
+## Logs and user settings
+*.log
+build_errors.txt
+build_log.txt
+build_output.txt
+.vs/
+.idea/
+.vscode/
+pid.txt
+pid2.txt
+pid3.txt
+
+publish_test/

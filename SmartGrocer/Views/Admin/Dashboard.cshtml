@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "System Overview";
+}
+
+<div class="row mt-4">
+    <div class="col-md-3 mb-4">
+        <div class="card p-4">
+            <h6 class="text-secondary">TOTAL SHOPS</h6>
+            <h2 class="text-gradient fw-bold">@ViewBag.TotalShops</h2>
+            <div class="mt-2 small"><i class="fas fa-arrow-up text-success"></i> Registered Shops</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card p-4">
+            <h6 class="text-secondary">ACTIVE OWNERS</h6>
+            <h2 class="text-gradient fw-bold">@ViewBag.TotalOwners</h2>
+            <div class="mt-2 small"><i class="fas fa-users text-info"></i> Shop Owners</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card p-4">
+            <h6 class="text-secondary">PENDING REQUESTS</h6>
+            <h2 class="text-gradient fw-bold">@ViewBag.PendingOwners Owners / @ViewBag.PendingShops Shops</h2>
+            <div class="mt-2 d-flex gap-2 small">
+                <a href="/Admin/ApproveOwners" class="text-info text-decoration-none border-end pe-2">Review Owners <i class="fas fa-chevron-right ms-1"></i></a>
+                <a href="/Admin/ApproveShops" class="text-info text-decoration-none">Review Shops <i class="fas fa-chevron-right ms-1"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card p-4">
+            <h6 class="text-secondary">TOTAL EMPLOYEES</h6>
+            <h2 class="text-gradient fw-bold">@ViewBag.TotalEmployees</h2>
+            <div class="mt-2 small"><i class="fas fa-id-card text-primary"></i> App-wide Employees</div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card p-4">
+            <h5 class="mb-4">System Activity Summary</h5>
+            <p class="text-secondary">Admin view for monitoring all shops and handling owner registration requests.</p>
+            <div class="d-flex gap-3">
+                <a href="/Admin/ApproveOwners" class="btn btn-gradient">Manage Requests</a>
+                <a href="/Admin/Shops" class="btn btn-outline-info">View All Shops</a>
+            </div>
+        </div>
+    </div>
+</div>

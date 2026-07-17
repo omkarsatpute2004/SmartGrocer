@@ -1,0 +1,46 @@
+@model List<SmartGrocer.Models.Sale>
+@{
+    ViewData["Title"] = "Sales History";
+}
+
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="mb-0"><i class="fas fa-history me-2"></i> Comprehensive Sales History</h5>
+        <div class="badge bg-success">Total Records: @Model.Count</div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>DATE</th>
+                    <th>PRODUCT NAME</th>
+                    <th>QUANTITY</th>
+                    <th>TOTAL PRICE</th>
+                    <th>PROFIT</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <i class="fas fa-info-circle fa-2x mb-3 text-secondary"></i>
+                            <p>No sales records found.</p>
+                        </td>
+                    </tr>
+                }
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td>@s.Date.ToString("dd MMM yyyy, hh:mm tt")</td>
+                        <td class="fw-bold text-primary">@s.Product?.Name</td>
+                        <td>@s.Quantity Units</td>
+                        <td class="fw-bold">₹@s.TotalAmount</td>
+                        <td class="text-success">₹@s.Profit</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
